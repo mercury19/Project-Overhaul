@@ -25,6 +25,12 @@ from compiler import *
 # 
 ####################################################################################################################
 
+#MISSION TEMPLATES CONSTANTS
+
+pilgrim_disguise = [itm.pilgrim_hood, itm.pilgrim_disguise, itm.practice_staff, itm.throwing_daggers]
+af_castle_lord = af_override_horse | af_override_weapons| af_require_civilian
+
+
 multiplayer_server_check_belfry_movement = (
   0, 0, 0, [],
   [

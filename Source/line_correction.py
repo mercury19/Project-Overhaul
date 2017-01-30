@@ -2,7 +2,7 @@ import sys
 sys.dont_write_bytecode = True
 
 
-def find_char(string, char): ##Function to determin whether or not the line is a comment by checking the first character
+def find_char(string, char): 
   comment = string[:1]
   if comment is char:
     return -1

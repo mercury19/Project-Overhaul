@@ -63,14 +63,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "Source/compile.py",
-			"settings":
-			{
-				"buffer_size": 18411,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -124,10 +116,29 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Noah/Desktop/Python Workspace/Mount and Blade/Projects/Project Overhaul/Source"
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source"
 	],
 	"file_history":
 	[
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_constants.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_items.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_troops.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_mission_templates.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/headers/header_troops.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/headers/header_triggers.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/line_correction.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/README.md",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/headers/__init__.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_skins.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_scene_props.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_parties.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_map_icons.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_factions.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_animations.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/module_scenes.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/compiler.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/compile.py",
+		"/C/Users/Noah/Desktop/Git/Python/Mount and Blade/Warband/Projects/Project Overhaul/Source/headers/header_skills.py",
 		"/C/Users/Noah/Desktop/Python Workspace/Mount and Blade/Projects/Project Overhaul/Source/module_constants.py",
 		"/C/Users/Noah/Desktop/Python Workspace/Mount and Blade/Projects/Project Overhaul/Source/compiler.py",
 		"/C/Users/Noah/Desktop/Python Workspace/Mount and Blade/Projects/Project Overhaul/Source/headers/header_common.py",
@@ -236,26 +247,7 @@
 		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/compiler.py",
 		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/compile.py",
 		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/TPE/__init__.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/TPE/plugin_tpe.py",
-		"/C/Users/Noah/Desktop/tpe_wreck-master/compile.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/tpe_simple_triggers.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/tpe_scripts.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/tpe_mission_templates.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/tpe_game_menus.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/process_line_correction.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/tpe_strings.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/headers/header_troops.py",
-		"/C/Users/Noah/Desktop/module_scripts.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/module_scripts.py",
-		"/C/Users/Noah/AppData/Roaming/Sublime Text 3/Packages/User/bh_core.sublime-settings",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/tpe_items.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/item_constants.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/tpe_presentations.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/module_info.py",
-		"/C/Users/Noah/Desktop/tpe_wreck-master/module_factions.py",
-		"/C/Users/Noah/Desktop/tpe_wreck-master/module_dialogs.py",
-		"/C/Users/Noah/Desktop/tpe_wreck-master/module_constants.py",
-		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/gpu_constants.py"
+		"/C/Users/Noah/Desktop/DIplomacy Based Mod Thing/Source - WRECK/TPE/plugin_tpe.py"
 	],
 	"find":
 	{
@@ -274,6 +266,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"from header_",
+			"from  header_",
+			"knows_riding_1",
 			"from module_constants import *",
 			"\"pt.",
 			"\"trp.",
@@ -423,112 +418,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "Source/compile.py",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 18411,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"bracket_highlighter.busy": false,
-							"bracket_highlighter.locations":
-							{
-								"close":
-								{
-								},
-								"icon":
-								{
-								},
-								"open":
-								{
-								},
-								"unmatched":
-								{
-								}
-							},
-							"bracket_highlighter.regions":
-							[
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content"
-							],
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -565,7 +456,7 @@
 	"menu_visible": true,
 	"output.find_results":
 	{
-		"height": 88.0
+		"height": 521.0
 	},
 	"pinned_build_system": "",
 	"project": "Project_Overhaul.sublime-project",

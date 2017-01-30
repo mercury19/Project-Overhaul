@@ -19,6 +19,33 @@ from compiler import *
 #  10) [Optional] Factions: List of factions that item can be found as merchandise.
 ####################################################################################################################
 
+#ITEMS CONSTANTS
+
+imodbits_none = 0
+imodbits_horse_basic = imodbit.swaybacked|imodbit.lame|imodbit.spirited|imodbit.heavy|imodbit.stubborn
+imodbits_horse_simple = imodbit.swaybacked|imodbit.lame|imodbit.heavy|imodbit.stubborn
+imodbits_cloth  = imodbit.tattered | imodbit.ragged | imodbit.sturdy | imodbit.thick | imodbit.hardened
+imodbits_clothes = imodbit.tattered | imodbit.ragged | imodbit.sturdy | imodbit.thick
+imodbits_armor  = imodbit.rusty | imodbit.battered | imodbit.crude | imodbit.thick | imodbit.reinforced |imodbit.lordly
+imodbits_plate  = imodbit.cracked | imodbit.rusty | imodbit.battered | imodbit.crude | imodbit.thick | imodbit.reinforced |imodbit.lordly
+imodbits_polearm = imodbit.cracked | imodbit.bent | imodbit.balanced
+imodbits_shield  = imodbit.cracked | imodbit.battered |imodbit.thick | imodbit.reinforced
+imodbits_sword   = imodbit.rusty | imodbit.chipped | imodbit.balanced |imodbit.tempered
+imodbits_sword_high   = imodbit.rusty | imodbit.chipped | imodbit.balanced |imodbit.tempered|imodbit.masterwork
+imodbits_axe   = imodbit.rusty | imodbit.chipped | imodbit.heavy
+imodbits_mace   = imodbit.rusty | imodbit.chipped | imodbit.heavy
+imodbits_pick   = imodbit.rusty | imodbit.chipped | imodbit.balanced | imodbit.heavy
+imodbits_bow = imodbit.cracked | imodbit.bent | imodbit.strong |imodbit.masterwork
+imodbits_crossbow = imodbit.cracked | imodbit.bent | imodbit.masterwork
+imodbits_missile   = imodbit.bent | imodbit.large_bag
+imodbits_thrown   = imodbit.bent | imodbit.heavy| imodbit.balanced| imodbit.large_bag
+imodbits_thrown_minus_heavy = imodbit.bent | imodbit.balanced| imodbit.large_bag
+
+imodbits_horse_good = imodbit.spirited|imodbit.heavy
+imodbits_good   = imodbit.sturdy | imodbit.thick | imodbit.hardened | imodbit.reinforced
+imodbits_bad    = imodbit.rusty | imodbit.chipped | imodbit.tattered | imodbit.ragged | imodbit.cracked | imodbit.bent
+
+
 items = [
 #************************************************************************************************
 # ITEMS in this range are hardcoded into item_codes.h and their order should not be changed!
