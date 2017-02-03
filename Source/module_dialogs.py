@@ -1,5 +1,7 @@
-# -*- coding: cp1254 -*-
 from compiler import *
+# -*- coding: cp1254 -*-
+
+
 
 ####################################################################################################################
 # During a dialog, the dialog lines are scanned from top to bottom.
@@ -148,7 +150,6 @@ from compiler import *
 # [ ZO01 ] - Bandits
 # [ ZO02 ] - Routed Warriors
 # [ ZO03 ] - Default Encounter
-# [ ZO04 ] - More Generic Encouters
 #
 # Low Priority Party Members
 # [ ZP01 ] - Prisoners in Party
@@ -1160,7 +1161,7 @@ dialogs = [
 		(faction_set_slot, "$players_kingdom", slot_faction_political_issue, "$g_center_taken_by_player_faction"),
 	 (try_end),	 
 	 (call_script, "script_give_center_to_lord", "$g_center_taken_by_player_faction", -1, 0), #-1 for the faction lord in this script is used exclusively in this context
-	 #It is only used because script.give_center_to_faction does not reset the town lord if fac_player_supporters_faction is the attacker
+	 #It is only used because script.give_center_to_faction does not reset the town lord if fac.player_supporters_faction is the attacker
 
      (assign, "$g_center_taken_by_player_faction", -1),
 	 
@@ -6039,7 +6040,7 @@ dialogs = [
   [anyone,"lord_start", [(neg|troop_slot_ge, "$g_talk_troop", slot_troop_prisoner_of_party, 0),
                          (store_partner_quest,":lords_quest"),
                          (eq,":lords_quest","qst_follow_spy"),
-                         (eq, "$qst_follow_spy_no_active_parties", 1),
+                         (eq, "$qst.follow_spy_no_active_parties", 1),
                          (party_count_prisoners_of_type, ":num_spies", "p_main_party", "trp_spy"),
                          (party_count_prisoners_of_type, ":num_spy_partners", "p_main_party", "trp_spy_partner"),
                          (gt, ":num_spies", 0),
@@ -6058,7 +6059,7 @@ dialogs = [
   [anyone,"lord_start", [(neg|troop_slot_ge, "$g_talk_troop", slot_troop_prisoner_of_party, 0),
                          (store_partner_quest,":lords_quest"),
                          (eq,":lords_quest","qst_follow_spy"),
-                         (eq, "$qst_follow_spy_no_active_parties", 1),
+                         (eq, "$qst.follow_spy_no_active_parties", 1),
                          (party_count_prisoners_of_type, ":num_spies", "p_main_party", "trp_spy"),
                          (party_count_prisoners_of_type, ":num_spy_partners", "p_main_party", "trp_spy_partner"),
                          (gt, ":num_spies", 0),
@@ -6075,7 +6076,7 @@ dialogs = [
   [anyone,"lord_start", [(neg|troop_slot_ge, "$g_talk_troop", slot_troop_prisoner_of_party, 0),
                          (store_partner_quest,":lords_quest"),
                          (eq,":lords_quest","qst_follow_spy"),
-                         (eq, "$qst_follow_spy_no_active_parties", 1),
+                         (eq, "$qst.follow_spy_no_active_parties", 1),
                          (party_count_prisoners_of_type, ":num_spies", "p_main_party", "trp_spy"),
                          (party_count_prisoners_of_type, ":num_spy_partners", "p_main_party", "trp_spy_partner"),
                          (eq, ":num_spies", 0),
@@ -6093,7 +6094,7 @@ dialogs = [
 
   [anyone,"lord_start", [(store_partner_quest,":lords_quest"),
                          (eq,":lords_quest","qst_follow_spy"),
-                         (eq, "$qst_follow_spy_no_active_parties", 1),
+                         (eq, "$qst.follow_spy_no_active_parties", 1),
                          (party_count_prisoners_of_type, ":num_spies", "p_main_party", "trp_spy"),
                          (party_count_prisoners_of_type, ":num_spy_partners", "p_main_party", "trp_spy_partner"),
                          (eq, ":num_spies", 0),
@@ -6156,12 +6157,12 @@ dialogs = [
   [anyone,"lord_start", [(store_partner_quest,":lords_quest"),
                          (eq,":lords_quest","qst_bring_back_runaway_serfs"),
                          (check_quest_concluded, "qst_bring_back_runaway_serfs"),
-                         (assign, reg17, "$qst_bring_back_runaway_serfs_num_parties_returned")],
+                         (assign, reg17, "$qst.bring_back_runaway_serfs_num_parties_returned")],
    "You disappoint me, {playername}. There were 3 groups of serfs that I charged you to return. 3. Not {reg17}.\
  I suppose the ones who did come back shall have to work twice as hard to make up for those that got away.\
  As for your reward, {playername}, I'll only pay you for the serfs you returned, not the ones you let fly.\
  Here. Take it, and let this business be done.", "lord_runaway_serf_half_completed",
-   [(store_mul, ":reward", "$qst_bring_back_runaway_serfs_num_parties_returned", 100),
+   [(store_mul, ":reward", "$qst.bring_back_runaway_serfs_num_parties_returned", 100),
     (val_div, ":reward", 2),
     (call_script, "script_troop_add_gold", "trp_player", ":reward"),
     (add_xp_as_reward, ":reward"),
@@ -6248,9 +6249,9 @@ dialogs = [
   [anyone,"lord_start", [(store_partner_quest,":lords_quest"),
                          (eq, ":lords_quest", "qst_scout_waypoints"),
                          (check_quest_succeeded, "qst_scout_waypoints"),
-                         (str_store_party_name, s13, "$qst_scout_waypoints_wp_1"),
-                         (str_store_party_name, s14, "$qst_scout_waypoints_wp_2"),
-                         (str_store_party_name, s15, "$qst_scout_waypoints_wp_3"),
+                         (str_store_party_name, s13, "$qst.scout_waypoints_wp_1"),
+                         (str_store_party_name, s14, "$qst.scout_waypoints_wp_2"),
+                         (str_store_party_name, s15, "$qst.scout_waypoints_wp_3"),
                          ],
    "You make a good scout, {playername}. My runner just brought me your reports of the mission to {s13}, {s14} and {s15}. Well done.", "lord_scout_waypoints_thank",
    [
@@ -6371,9 +6372,9 @@ dialogs = [
      (check_quest_active, "qst_follow_army"),
      (faction_slot_eq, "$players_kingdom", slot_faction_marshall, "$g_talk_troop"),
      (eq, "$g_random_army_quest", "qst_scout_waypoints"),
-     (str_store_party_name, s13, "$qst_scout_waypoints_wp_1"),
-     (str_store_party_name, s14, "$qst_scout_waypoints_wp_2"),
-     (str_store_party_name, s15, "$qst_scout_waypoints_wp_3"),
+     (str_store_party_name, s13, "$qst.scout_waypoints_wp_1"),
+     (str_store_party_name, s14, "$qst.scout_waypoints_wp_2"),
+     (str_store_party_name, s15, "$qst.scout_waypoints_wp_3"),
      ],
    "{playername}, I need a volunteer to scout the area. We're sorely lacking on information,\
  and I simply must have a better picture of the situation before we can proceed.\
@@ -6388,9 +6389,9 @@ dialogs = [
    [
      (call_script, "script_end_quest", "qst_follow_army"),
      (str_store_troop_name_link, s9, "$g_talk_troop"),
-     (str_store_party_name_link, s13, "$qst_scout_waypoints_wp_1"),
-     (str_store_party_name_link, s14, "$qst_scout_waypoints_wp_2"),
-     (str_store_party_name_link, s15, "$qst_scout_waypoints_wp_3"),
+     (str_store_party_name_link, s13, "$qst.scout_waypoints_wp_1"),
+     (str_store_party_name_link, s14, "$qst.scout_waypoints_wp_2"),
+     (str_store_party_name_link, s15, "$qst.scout_waypoints_wp_3"),
      (setup_quest_text, "$g_random_army_quest"),
      (str_store_string, s2, "@{s9} asked you to scout {s13}, {s14} and {s15}, then report back."),
      (call_script, "script_start_quest", "$g_random_army_quest", "$g_talk_troop"),
@@ -6737,7 +6738,7 @@ dialogs = [
     (neg|check_quest_succeeded, "qst_intrigue_against_lord"),
     (neg|check_quest_failed, "qst_intrigue_against_lord"),
 	
-    (quest_get_slot, ":target_troop", "qst_intrigue_against_lord", slot_quest_target_troop), #was qst_offer_gift
+    (quest_get_slot, ":target_troop", "qst_intrigue_against_lord", slot_quest_target_troop), #was qst.offer_gift
 	(store_faction_of_troop, ":target_troop_faction", ":target_troop"),
 	(faction_slot_eq, ":target_troop_faction", slot_faction_leader, "$g_talk_troop"), 
     ],
@@ -6815,7 +6816,7 @@ dialogs = [
 
    [anyone|plyr,"intrigue_quest_state_complaint_failed", [
    ],
-   "I stand by my words, my liege.", "intrigue_quest_state_accept.blame",[
+   "I stand by my words, my liege.", "intrigue_quest_state_accept_blame",[
    (call_script, "script_change_player_honor", 1),
    ]],
 
@@ -6833,7 +6834,7 @@ dialogs = [
    (call_script, "script_change_player_honor", -2),
    ]],
 
-   [anyone,"intrigue_quest_state_accept.blame", [
+   [anyone,"intrigue_quest_state_accept_blame", [
    ],
    "Indeed. You may stand by your words, but keep them to yourself. I will not have you undercutting my faithful follower {s4}.", "lord_pretalk",[
    ]],
@@ -12188,19 +12189,19 @@ dialogs = [
   
   
   [anyone ,"knight_offer_join_accept", [(troop_slot_ge, "$g_talk_troop", slot_troop_leaded_party, 1)],
-   "I've some trusted men in my band who could be of use to you. What do you wish to do with them?", "knight_offer_join_accept.party",[
+   "I've some trusted men in my band who could be of use to you. What do you wish to do with them?", "knight_offer_join_accept_party",[
       ]],
   [anyone ,"knight_offer_join_accept", [], "Ah, certainly, it might be fun!", "close_window",[
       (call_script, "script_recruit_troop_as_companion", "$g_talk_troop"),
       (assign, "$g_leave_encounter",1)
       ]],
   
-  [anyone|plyr,"knight_offer_join_accept.party", [], "You may disband your men. I've no need for other troops.", "knight_join_party_disband",[]],
-  [anyone|plyr,"knight_offer_join_accept.party", [(troop_get_slot, ":companions_party","$g_talk_troop", slot_troop_leaded_party),
+  [anyone|plyr,"knight_offer_join_accept_party", [], "You may disband your men. I've no need for other troops.", "knight_join_party_disband",[]],
+  [anyone|plyr,"knight_offer_join_accept_party", [(troop_get_slot, ":companions_party","$g_talk_troop", slot_troop_leaded_party),
                                        (party_can_join_party,":companions_party","p_main_party"),
       ], "Your men may join as well. We need every soldier we can muster.", "knight_join_party_join",[]],
-  [anyone|plyr,"knight_offer_join_accept.party", [(is_between,"$g_encountered_party",centers_begin, centers_end)], "Lead your men out of the town. I shall catch up with you on the road.", "knight_join_party_lead_out",[]],
-  [anyone|plyr,"knight_offer_join_accept.party", [(neg|is_between,"$g_encountered_party",centers_begin, centers_end)],
+  [anyone|plyr,"knight_offer_join_accept_party", [(is_between,"$g_encountered_party",centers_begin, centers_end)], "Lead your men out of the town. I shall catch up with you on the road.", "knight_join_party_lead_out",[]],
+  [anyone|plyr,"knight_offer_join_accept_party", [(neg|is_between,"$g_encountered_party",centers_begin, centers_end)],
    "Keep doing what you were doing. I'll catch up with you later.", "knight_join_party_lead_out",[]],
 
 
@@ -12700,7 +12701,7 @@ dialogs = [
 										  (quest_slot_eq, "qst_collect_taxes", slot_quest_giver_troop, "$g_talk_troop"),
 
                                          (check_quest_succeeded, "qst_collect_taxes"),
-                                         (eq, "$qst_collect_taxes_halve_taxes", 0),
+                                         (eq, "$qst.collect_taxes_halve_taxes", 0),
                                          (quest_get_slot, ":quest_gold_reward", "qst_collect_taxes", slot_quest_gold_reward),
                                          (store_mul, ":required_gold", ":quest_gold_reward", 8),
                                          (val_div, ":required_gold", 10),
@@ -12718,7 +12719,7 @@ dialogs = [
 										  (quest_slot_eq, "qst_collect_taxes", slot_quest_giver_troop, "$g_talk_troop"),
 										 
                                          (check_quest_succeeded, "qst_collect_taxes"),
-                                         (eq, "$qst_collect_taxes_halve_taxes", 1),
+                                         (eq, "$qst.collect_taxes_halve_taxes", 1),
                                          (quest_get_slot, ":quest_gold_reward", "qst_collect_taxes", slot_quest_gold_reward),
                                          (store_mul, ":required_gold", ":quest_gold_reward", 95),
                                          (val_div, ":required_gold", 100),
@@ -13134,14 +13135,14 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
   [anyone|plyr,"lord_mercenary_service_verify", [], "On second thought, forget it.", "lord_mercenary_service_reject", []],
 
   [anyone,"lord_mercenary_service_verify_2", [], "That will do. You've made a wise choice, my friend.\
- {s9} does well by its loyal fighters, you will receive many rewards for your service.", "lord_mercenary_service_accept.3", [
+ {s9} does well by its loyal fighters, you will receive many rewards for your service.", "lord_mercenary_service_accept_3", [
      (call_script, "script_troop_add_gold", "trp_player", "$temp"),
      (store_current_day, ":cur_day"),
      (store_add, "$mercenary_service_next_renew_day", ":cur_day", 30),
      (call_script, "script_player_join_faction", "$g_talk_troop_faction"),
      (str_store_faction_name, s9, "$g_talk_troop_faction"),]],
 
-  [anyone,"lord_mercenary_service_accept.3", [], "Now, I suggest you prepare for a serious campaign.\
+  [anyone,"lord_mercenary_service_accept_3", [], "Now, I suggest you prepare for a serious campaign.\
  Train and equip your soldiers as best you can in the meantime, and respond quickly when you are summoned for duty.", "lord_pretalk", []],
 
   [anyone,"lord_mercenary_service_reject", [(str_store_faction_name, s9, "$g_talk_troop_faction")],
@@ -13667,7 +13668,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
  Dispose of him for me and I shall reward you generously.", "close_window",
    [(call_script, "script_start_quest", "$random_quest_no", "$g_talk_troop"),
     (assign, "$g_leave_town",1),
-    (assign, "$qst_kill_local_merchant_center", "$current_town"),
+    (assign, "$qst.kill_local_merchant_center", "$current_town"),
     (rest_for_hours, 10, 4, 0),
     (finish_mission),
     ]],
@@ -13859,16 +13860,16 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
      (call_script, "script_change_player_relation_with_troop", "$g_talk_troop", 1),
 
      (spawn_around_party, "p_main_party", "pt_spy_partners"),
-     (assign, "$qst_follow_spy_spy_partners_party", reg0),
-     (party_set_position, "$qst_follow_spy_spy_partners_party", pos63),
-     (party_set_ai_behavior, "$qst_follow_spy_spy_partners_party", ai_bhvr_hold),
-     (party_set_flags, "$qst_follow_spy_spy_partners_party", pf_default_behavior, 0),
+     (assign, "$qst.follow_spy_spy_partners_party", reg0),
+     (party_set_position, "$qst.follow_spy_spy_partners_party", pos63),
+     (party_set_ai_behavior, "$qst.follow_spy_spy_partners_party", ai_bhvr_hold),
+     (party_set_flags, "$qst.follow_spy_spy_partners_party", pf_default_behavior, 0),
      (set_spawn_radius, 0),
      (spawn_around_party, "$g_encountered_party", "pt_spy"),
-     (assign, "$qst_follow_spy_spy_party", reg0),
-     (party_set_ai_behavior, "$qst_follow_spy_spy_party", ai_bhvr_travel_to_party),
-     (party_set_ai_object, "$qst_follow_spy_spy_party", "$qst_follow_spy_spy_partners_party"),
-     (party_set_flags, "$qst_follow_spy_spy_party", pf_default_behavior, 0),
+     (assign, "$qst.follow_spy_spy_party", reg0),
+     (party_set_ai_behavior, "$qst.follow_spy_spy_party", ai_bhvr_travel_to_party),
+     (party_set_ai_object, "$qst.follow_spy_spy_party", "$qst.follow_spy_spy_partners_party"),
+     (party_set_flags, "$qst.follow_spy_spy_party", pf_default_behavior, 0),
      (assign, "$g_leave_town", 1),
      (rest_for_hours, 2, 4, 0),
      #no need to set g_leave_encounter to 1 since this quest can only be given at a town
@@ -14109,20 +14110,20 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
       (set_spawn_radius, 3),
       (spawn_around_party,":quest_giver_center",":quest_target_party_template"),
-      (assign, "$qst_bring_back_runaway_serfs_party_1", reg0),
-      (party_set_ai_behavior,"$qst_bring_back_runaway_serfs_party_1",ai_bhvr_travel_to_party),
-      (party_set_ai_object,"$qst_bring_back_runaway_serfs_party_1",":quest_target_center"),
-      (party_set_flags, "$qst_bring_back_runaway_serfs_party_1", pf_default_behavior, 0),
+      (assign, "$qst.bring_back_runaway_serfs_party_1", reg0),
+      (party_set_ai_behavior,"$qst.bring_back_runaway_serfs_party_1",ai_bhvr_travel_to_party),
+      (party_set_ai_object,"$qst.bring_back_runaway_serfs_party_1",":quest_target_center"),
+      (party_set_flags, "$qst.bring_back_runaway_serfs_party_1", pf_default_behavior, 0),
       (spawn_around_party,":quest_giver_center",":quest_target_party_template"),
-      (assign, "$qst_bring_back_runaway_serfs_party_2", reg0),
-      (party_set_ai_behavior,"$qst_bring_back_runaway_serfs_party_2",ai_bhvr_travel_to_party),
-      (party_set_ai_object,"$qst_bring_back_runaway_serfs_party_2",":quest_target_center"),
-      (party_set_flags, "$qst_bring_back_runaway_serfs_party_2", pf_default_behavior, 0),
+      (assign, "$qst.bring_back_runaway_serfs_party_2", reg0),
+      (party_set_ai_behavior,"$qst.bring_back_runaway_serfs_party_2",ai_bhvr_travel_to_party),
+      (party_set_ai_object,"$qst.bring_back_runaway_serfs_party_2",":quest_target_center"),
+      (party_set_flags, "$qst.bring_back_runaway_serfs_party_2", pf_default_behavior, 0),
       (spawn_around_party,":quest_giver_center",":quest_target_party_template"),
-      (assign, "$qst_bring_back_runaway_serfs_party_3", reg0),
-      (party_set_ai_behavior,"$qst_bring_back_runaway_serfs_party_3",ai_bhvr_travel_to_party),
-      (party_set_ai_object,"$qst_bring_back_runaway_serfs_party_3",":quest_target_center"),
-      (party_set_flags, "$qst_bring_back_runaway_serfs_party_3", pf_default_behavior, 0),
+      (assign, "$qst.bring_back_runaway_serfs_party_3", reg0),
+      (party_set_ai_behavior,"$qst.bring_back_runaway_serfs_party_3",ai_bhvr_travel_to_party),
+      (party_set_ai_object,"$qst.bring_back_runaway_serfs_party_3",":quest_target_center"),
+      (party_set_flags, "$qst.bring_back_runaway_serfs_party_3", pf_default_behavior, 0),
       (rest_for_hours, 1, 4),
     (try_end),
     (call_script, "script_start_quest", "$random_quest_no", "$g_talk_troop"),
@@ -17826,7 +17827,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (val_mul, ":xp_reward", 4),
     (add_xp_as_reward, ":xp_reward"),
     (str_store_troop_name, s1, ":quest_giver_troop"),
-    (assign, ":debt", "$qst_deliver_wine_debt"),
+    (assign, ":debt", "$qst.deliver_wine_debt"),
     (store_sub, ":item_left", ":quest_target_amount", ":item_count"),
     (val_mul, ":debt", ":item_left"),
     (val_div, ":debt", ":quest_target_amount"),
@@ -17855,7 +17856,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (quest_get_slot, ":quest_giver_troop", "qst_deliver_wine", slot_quest_giver_troop),
     (str_store_item_name, s4, ":quest_target_item"),
     (str_store_troop_name, s1, ":quest_giver_troop"),
-    (val_add, "$debt_to_merchants_guild", "$qst_deliver_wine_debt"),
+    (val_add, "$debt_to_merchants_guild", "$qst.deliver_wine_debt"),
     (call_script, "script_end_quest", "qst_deliver_wine"),
    ]],
 
@@ -20869,8 +20870,8 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (quest_get_slot, ":quest_giver_center", "qst_troublesome_bandits", slot_quest_giver_center),
     (spawn_around_party,":quest_giver_center","pt_troublesome_bandits"),
     (quest_set_slot, "qst_troublesome_bandits", slot_quest_target_party, reg0),
-    (store_num_parties_destroyed,"$qst_troublesome_bandits_eliminated","pt_troublesome_bandits"),
-    (store_num_parties_destroyed_by_player, "$qst_troublesome_bandits_eliminated_by_player", "pt_troublesome_bandits"),
+    (store_num_parties_destroyed,"$qst.troublesome_bandits_eliminated","pt_troublesome_bandits"),
+    (store_num_parties_destroyed_by_player, "$qst.troublesome_bandits_eliminated_by_player", "pt_troublesome_bandits"),
     (str_store_troop_name, s9, "$g_talk_troop"),
     (str_store_party_name_link, s4, "$g_encountered_party"),
     (setup_quest_text,"qst_troublesome_bandits"),
@@ -23246,26 +23247,6 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
   [anyone|plyr,"party_encounter_hostile_defender", [],
    "Nothing. We'll leave you in peace.", "close_window", [(assign, "$g_leave_encounter",1)]],
-
-####################################################################################################################
-# [ ZO04 ] - More Generic Encouters
-####################################################################################################################  
-
-  [anyone,"start", [], "Surrender or die. Make your choice", "battle_reason_stated",[]],
-  [anyone|plyr,"battle_reason_stated", [], "I am not afraid of you. I will fight.", "close_window",[[encounter_attack]]],
-
-  [anyone,"start", [], "Hello. What can I do for you?", "free",[]],
-  [anyone|plyr,"free", [[neg|in_meta_mission]], "Tell me about yourself", "view_char_requested",[]],
-  [anyone,"view_char_requested", [], "Very well, listen to this...", "view_char",[[change_screen_view_character]]],
-  [anyone,"view_char", [], "Anything else?", "free",[]],
-
-  [anyone|plyr,"end", [], "[Done]", "close_window",[]],
-  
-  [anyone|plyr,"start", [], "Drop your weapons and surrender if you want to live", "threaten_1",[]],
-  [anyone,"threaten_1", [], "We will fight you first", "end",[[encounter_attack]]],
-
-  [anyone,"member_direct_campaign", [], "Yes, {my lord/my lady}. Which message do you wish to send to the vassals?", "member_direct_campaign_choice",
-  []],
   
 ####################################################################################################################
 # [ ZP01 ] - Prisoners in Party
@@ -23956,11 +23937,26 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   
   ], "In terms of attacks on travellers, the town of {s4} is believed to be the most dangerous. Here in {s5}, we are less afflicted by bandits and raiders than {reg4} towns, and more afflicted than {reg5}. ", "mayor_pretalk",[
   ]],
-
-
+  
 ####################################################################################################################
 # [ ZZ99 ] - Failsafe
 #################################################################################################################### 
+  
+  [anyone,"start", [], "Surrender or die. Make your choice", "battle_reason_stated",[]],
+  [anyone|plyr,"battle_reason_stated", [], "I am not afraid of you. I will fight.", "close_window",[[encounter_attack]]],
+
+  [anyone,"start", [], "Hello. What can I do for you?", "free",[]],
+  [anyone|plyr,"free", [[neg|in_meta_mission]], "Tell me about yourself", "view_char_requested",[]],
+  [anyone,"view_char_requested", [], "Very well, listen to this...", "view_char",[[change_screen_view_character]]],
+  [anyone,"view_char", [], "Anything else?", "free",[]],
+
+  [anyone|plyr,"end", [], "[Done]", "close_window",[]],
+  
+  [anyone|plyr,"start", [], "Drop your weapons and surrender if you want to live", "threaten_1",[]],
+  [anyone,"threaten_1", [], "We will fight you first", "end",[[encounter_attack]]],
+
+  [anyone,"member_direct_campaign", [], "Yes, {my lord/my lady}. Which message do you wish to send to the vassals?", "member_direct_campaign_choice",
+  []],
   
   [anyone|plyr,"free", [[in_meta_mission]], " Good-bye.", "close_window",[]],
   [anyone|plyr,"free", [[neg|in_meta_mission]], " [Leave]", "close_window",[]],

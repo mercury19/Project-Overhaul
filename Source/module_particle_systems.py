@@ -13,7 +13,7 @@ from compiler import *
 #   Each particle system contains the following fields:
 #  
 #  1) Particle system id (string): used for referencing particle systems in other files.
-#     The prefix psys_ is automatically added before each particle system id.
+#     The prefix psys. is automatically added before each particle system id.
 #  2) Particle system flags (int). See header_particle_systems.py for a list of available flags
 #  3) mesh-name.
 ####

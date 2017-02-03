@@ -1,3 +1,4 @@
+from compiler import *
 ###################################################
 # header_scene_props.py
 # This file contains declarations for scene props

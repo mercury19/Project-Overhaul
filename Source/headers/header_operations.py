@@ -1574,7 +1574,7 @@ str_clear                       = 2319  # (str_clear, <string_register>)
                                         # Clears the contents of the referenced string register.
 str_store_string                = 2320  # (str_store_string, <string_register>, <string_id>),
                                         # Stores a string value in the referenced string register. Only string constants and quick strings can be stored this way.
-str_store_string_reg            = 2321  # (str_store_string, <string_register>, <string_no>),
+str_store_string_reg            = 2321  # (str_store_string_reg, <string_register>, <string_reg_src>),
                                         # Copies the contents of one string register from another.
 str_store_troop_name            = 2322  # (str_store_troop_name, <string_register>, <troop_id>),
                                         # Stores singular troop name in referenced string register.

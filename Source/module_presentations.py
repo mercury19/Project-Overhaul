@@ -1,16 +1,16 @@
 from compiler import *
+import string
 
 ####################################################################################################################
 #  Each presentation record contains the following fields:
-#  1) Presentation id: used for referencing presentations in other files. The prefix prsnt_ is automatically added before each presentation id.
+#  1) Presentation id: used for referencing presentations in other files. The prefix prsnt. is automatically added before each presentation id.
 #  2) Presentation flags. See header_presentations.py for a list of available flags
 #  3) Presentation background mesh: See module_meshes.py for a list of available background meshes
 #  4) Triggers: Simple triggers that are associated with the presentation
 ####################################################################################################################
 
 presentations = [
-  ("game_credits", prsntf_read_only, mesh.load_window,
-    [
+  ("game_credits",prsntf_read_only,mesh.load_window,[
       (ti_on_presentation_load,
        [(assign, "$g_presentation_credits_obj_1", -1),
         (assign, "$g_presentation_credits_obj_2", -1),

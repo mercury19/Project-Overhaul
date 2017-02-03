@@ -2,7 +2,7 @@ from compiler import *
 
 ####################################################################################################################
 #  Each mesh record contains the following fields:
-#  1) Mesh id: used for referencing meshes in other files. The prefix mesh_ is automatically added before each mesh id.
+#  1) Mesh id: used for referencing meshes in other files. The prefix mesh. is automatically added before each mesh id.
 #  2) Mesh flags. See header_meshes.py for a list of available flags
 #  3) Mesh resource name: Resource name of the mesh
 #  4) Mesh translation on x axis: Will be done automatically when the mesh is loaded

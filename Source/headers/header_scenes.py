@@ -1,3 +1,5 @@
+from compiler import *
+
 ###################################################
 # header_scenes.py
 # This file contains declarations for scenes

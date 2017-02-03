@@ -1,3 +1,4 @@
+from compiler import *
 ###################################################
 # header_common.py
 # This file contains common declarations.

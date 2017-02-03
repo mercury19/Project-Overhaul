@@ -1,3 +1,4 @@
+from compiler import *
 ###################################################
 # header_sounds.py
 # This file contains declarations for sounds

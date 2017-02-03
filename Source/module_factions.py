@@ -3,7 +3,7 @@ from compiler import *
 ####################################################################################################################
 #  Each faction record contains the following fields:
 #  1) Faction id: used for referencing factions in other files.
-#     The prefix fac_ is automatically added before each faction id.
+#     The prefix fac. is automatically added before each faction id.
 #  2) Faction name.
 #  3) Faction flags. See header_factions.py for a list of available flags
 #  4) Faction coherence. Relation between members of this faction.

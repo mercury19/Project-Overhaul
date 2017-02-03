@@ -5,7 +5,7 @@ pmf_is_prisoner = 0x0001
 ####################################################################################################################
 #  Each party template record contains the following fields:
 #  1) Party-template id: used for referencing party-templates in other files.
-#     The prefix pt_ is automatically added before each party-template id.
+#     The prefix pt. is automatically added before each party-template id.
 #  2) Party-template name.
 #  3) Party flags. See header_parties.py for a list of available flags
 #  4) Menu. ID of the menu to use when this party is met. The value 0 uses the default party encounter system.

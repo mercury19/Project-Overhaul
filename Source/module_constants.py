@@ -204,6 +204,10 @@ slot_town_store         = 14
 slot_town_arena         = 16
 slot_town_alley         = 17
 slot_town_walls         = 18
+
+slot_castle_exterior    = slot_town_center
+slot_village_center     = slot_town_center
+
 slot_center_culture     = 19
 
 slot_town_tavernkeeper  = 20
@@ -212,6 +216,9 @@ slot_town_armorer       = 22
 slot_town_merchant      = 23
 slot_town_horse_merchant= 24
 slot_town_elder         = 25
+
+slot_village_elder      = slot_town_elder
+
 slot_center_player_relation = 26
 
 slot_center_siege_with_belfry = 27
@@ -242,8 +249,6 @@ slot_center_accumulated_rents      = 47 #collected automatically by NPC lords
 slot_center_accumulated_tariffs    = 48 #collected automatically by NPC lords
 slot_town_wealth        = 49 #total amount of accumulated wealth in the center, pays for the garrison
 slot_town_prosperity    = 50 #affects the amount of wealth generated
-slot_town_player_odds   = 51
-
 
 slot_party_last_toll_paid_hours = 52
 slot_party_food_store           = 53 #used for sieges
@@ -271,10 +276,6 @@ slot_party_last_in_home_center         = 69 #used for AI
 slot_party_leader_last_courted         = 70 #used for AI
 slot_party_last_in_any_center          = 71 #used for AI
 
-
-
-slot_castle_exterior    = slot_town_center
-
 argument_none         = 0
 argument_legal        = 1
 argument_commons      = 2
@@ -287,15 +288,29 @@ slot_town_village_product = 76
 slot_town_rebellion_readiness = 77
 #(readiness can be a negative number if the rebellion has been defeated)
 
-slot_town_arena_melee_mission_tpl = 78
-slot_town_arena_torny_mission_tpl = 79
-slot_town_arena_melee_1_num_teams = 80
-slot_town_arena_melee_1_team_size = 81
-slot_town_arena_melee_2_num_teams = 82
-slot_town_arena_melee_2_team_size = 83
-slot_town_arena_melee_3_num_teams = 84
-slot_town_arena_melee_3_team_size = 85
-slot_town_arena_melee_cur_tier    = 86
+slot_town_has_tournament                    = 78
+slot_town_tournament_max_teams              = 79
+slot_town_tournament_max_team_size          = 80
+slot_town_tournament_weapon_maybe_horse     = 81 # first slot for which a horse is optional
+slot_town_tournament_weapon_no_horse        = 82 # first slot for which a horse is forbidden
+slot_town_tournament_weapon_1               = 83
+slot_town_tournament_weapon_2               = 84
+slot_town_tournament_weapon_3               = 85
+slot_town_tournament_weapon_4               = 86
+slot_town_tournament_weapon_5               = 87
+slot_town_tournament_weapon_6               = 88
+slot_town_tournament_weapon_7               = 89
+slot_town_tournament_weapon_end             = 90
+tournament_weapon_horse_offset = 10 # must be greater than the max number of weapon sets
+# slot_town_arena_melee_mission_tpl = 78
+# slot_town_arena_torny_mission_tpl = 79
+# slot_town_arena_melee_1_num_teams = 80
+# slot_town_arena_melee_1_team_size = 81
+# slot_town_arena_melee_2_num_teams = 82
+# slot_town_arena_melee_2_team_size = 83
+# slot_town_arena_melee_3_num_teams = 84
+# slot_town_arena_melee_3_team_size = 85
+# slot_town_arena_melee_cur_tier    = 86
 
 slot_center_npc_volunteer_troop_type   = 90
 slot_center_npc_volunteer_troop_amount = 91
@@ -339,11 +354,8 @@ slot_center_player_enterprise     				  = 137 #noted with the item produced
 slot_center_player_enterprise_production_order    = 138
 slot_center_player_enterprise_days_until_complete = 139
 
-slot_center_has_bandits                        = 155
-slot_town_has_tournament                       = 156
-slot_town_tournament_max_teams                 = 157
-slot_town_tournament_max_team_size             = 158
 
+slot_center_has_bandits                        = 158
 slot_center_faction_when_oath_renounced        = 159
 
 slot_center_walker_0_troop                   = 160
@@ -1095,6 +1107,7 @@ merchant_toll_duration        = 72 #Tolls are valid for 72 hours
 hero_escape_after_defeat_chance = 70
 raid_distance = 4
 fire_duration = 4 #fires takes 4 hours
+num_tournament_rounds = 6 # -> 64 participants
 
 surnames_begin = "str_surname_1"
 surnames_end = "str_surnames_end"
@@ -1168,6 +1181,12 @@ mercenary_troops_end = "trp_mercenary_musketeer"
 
 outlaws_begin = "trp_looter"
 outlaws_end = "trp_manhunter"
+
+arena_champions_begin = "trp_xerina"
+arena_champions_end = "trp_fight_promoter"
+
+arena_fighters_begin = "trp_arena_training_fighter_1"
+arena_fighters_end = "trp_cattle"
 
 multiplayer_troops_begin = "trp_swadian_crossbowman_multiplayer"
 multiplayer_troops_end = "trp_multiplayer_end"

@@ -2,7 +2,7 @@ from compiler import *
 
 ####################################################################################################################
 #  Each scene record contains the following fields:
-#  1) Scene id {string}: used for referencing scenes in other files. The prefix scn_ is automatically added before each scene-id.
+#  1) Scene id {string}: used for referencing scenes in other files. The prefix scn. is automatically added before each scene-id.
 #  2) Scene flags {int}. See header_scenes.py for a list of available flags
 #  3) Mesh name {string}: This is used for indoor scenes only. Use the keyword "none" for outdoor scenes.
 #  4) Body name {string}: This is used for indoor scenes only. Use the keyword "none" for outdoor scenes.

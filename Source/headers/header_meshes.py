@@ -1,3 +1,4 @@
+from compiler import *
 ###################################################
 # header_meshes.py
 # This file contains declarations for meshes

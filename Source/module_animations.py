@@ -1,5 +1,4 @@
 from compiler import *
-
 ####################################################################################################################
 #  There are two animation arrays (one for human and one for horse). Each animation in these arrays contains the following fields:
 #  1) Animation id (string): used for referencing animations in other files. The prefix anim_ is automatically added before each animation-id .

@@ -1,5 +1,6 @@
-# -*- coding: cp1252 -*-
 from compiler import *
+# -*- coding: cp1252 -*-
+import string
 
 ####################################################################################################################
 #  Each scene prop record contains the following fields:

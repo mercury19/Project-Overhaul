@@ -1,3 +1,4 @@
+from compiler import *
 ###################################################
 # header_triggers.py
 # This file contains declarations for triggers

@@ -2,7 +2,7 @@ from compiler import *
 
 ####################################################################################################################
 #  Each skill contains the following fields:
-#  1) Skill id (string): used for referencing skills in other files. The prefix skl_ is automatically added before each skill-id .
+#  1) Skill id (string): used for referencing skills in other files. The prefix skl. is automatically added before each skill-id .
 #  2) Skill name (string).
 #  3) Skill flags (int). See header_skills.py for a list of available flags
 #  4) Maximum level of the skill (int).

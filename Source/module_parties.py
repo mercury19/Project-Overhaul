@@ -3,7 +3,7 @@ from compiler import *
 ####################################################################################################################
 #  Each party record contains the following fields:
 #  1) Party id: used for referencing parties in other files.
-#     The prefix p_ is automatically added before each party id.
+#     The prefix p. is automatically added before each party id.
 #  2) Party name.
 #  3) Party flags. See header_parties.py for a list of available flags
 #  4) Menu. ID of the menu to use when this party is met. The value 0 uses the default party encounter system.
@@ -313,4 +313,5 @@ parties = [
   ("reserved_3"                  ,"{!}reserved",    pf_disabled|pf_is_static, no_menu, pt.none, fac.commoners,0,ai_bhvr_hold,0,(0., 0),[(trp.looter,15,0)]),
   ("reserved_4"                  ,"{!}reserved",    pf_disabled|pf_is_static, no_menu, pt.none, fac.commoners,0,ai_bhvr_hold,0,(0., 0),[(trp.looter,15,0)]),
   ("reserved_5"                  ,"{!}reserved",    pf_disabled|pf_is_static, no_menu, pt.none, fac.commoners,0,ai_bhvr_hold,0,(0., 0),[(trp.looter,15,0)]),
+  ("static_parties_end"          ,"{!}reserved",    pf_disabled|pf_is_static, no_menu, pt.none, fac.commoners,0,ai_bhvr_hold,0,(0., 0),[(trp.looter,15,0)]),
   ]

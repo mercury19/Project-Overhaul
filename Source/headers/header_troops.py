@@ -1,3 +1,4 @@
+from compiler import *
 from header_common import bignum
 
 ###################################################
@@ -188,4 +189,3 @@ def upgrade2(troops,troop1_id,troop2_id,troop3_id):
       cur_troop[13:13] = [0, troop2_no, troop3_no]
     else:
       cur_troop[14:14] = [troop2_no, troop3_no]
-

@@ -1,3 +1,4 @@
+from compiler import *
 ###################################################
 # header_paricle_systems.py
 # This file contains declarations for particle_systems

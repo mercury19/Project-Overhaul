@@ -1,3 +1,4 @@
+from compiler import *
 ###################################################
 # header_skins.py
 # This file contains declarations for skins
