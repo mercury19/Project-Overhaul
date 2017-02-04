@@ -62,11 +62,8 @@ slot_agent_spawn_entry_point      = 8
 slot_agent_target_prop_instance   = 9
 slot_agent_map_overlay_id         = 10
 slot_agent_target_entry_point     = 11
-slot_agent_initial_ally_power     = 12
-slot_agent_initial_enemy_power    = 13
-slot_agent_enemy_threat           = 14
-slot_agent_is_running_away        = 15
-slot_agent_courage_score          = 16
+slot_agent_is_running_away        = 12
+
 slot_agent_is_respawn_as_bot      = 17
 slot_agent_cur_animation          = 18
 slot_agent_next_action_time       = 19
@@ -1159,7 +1156,7 @@ heroes_begin = active_npcs_begin
 heroes_end = kingdom_ladies_end
 
 soldiers_begin = "trp_farmer"
-soldiers_end = "trp_town_walker_1"
+soldiers_end = "trp_kidnapped_girl"
 
 pretenders_begin = "trp_kingdom_1_pretender"
 pretenders_end = active_npcs_end
@@ -1306,13 +1303,13 @@ arena_masters_end      = "trp_town_1_armorer"
 training_gound_trainers_begin    = "trp_trainer_1"
 training_gound_trainers_end      = "trp_ransom_broker_1"
 
-town_walkers_begin = "trp_town_walker_1"
-town_walkers_end = "trp_village_walker_1"
+town_walkers_begin = "trp_town_walker_m"
+town_walkers_end = "trp_village_walker_m"
 
-village_walkers_begin = "trp_village_walker_1"
-village_walkers_end   = "trp_spy_walker_1"
+village_walkers_begin = "trp_village_walker_m"
+village_walkers_end   = "trp_spy_walker_m"
 
-spy_walkers_begin = "trp_spy_walker_1"
+spy_walkers_begin = "trp_spy_walker_m"
 spy_walkers_end = "trp_tournament_master"
 
 walkers_begin = town_walkers_begin

@@ -544,19 +544,19 @@ items = [
  60 , weight(1.0)|abundance(100)|head_armor(20)|body_armor(0)|leg_armor(0)|difficulty(0) ,imodbits_plate ],
 
 # Cheap Eastern Helmets
-["nomad_cap", "Nomad Cap", [("nomad_cap_a_new",0)], itp_merchandise| itp_type_head_armor |itp_civilian  ,0,
+["nomad_cap", "Nomad Skullcap", [("nomad_cap_a_new",0)], itp_merchandise| itp_type_head_armor |itp_civilian  ,0,
  6 , weight(0.75)|abundance(100)|head_armor(10)|body_armor(0)|leg_armor(0)|difficulty(0) ,imodbits_cloth, [], [fac.culture_2, fac.culture_3] ],
-["nomad_cap_b", "Nomad Cap", [("nomad_cap_b_new",0)], itp_merchandise| itp_type_head_armor |itp_civilian  ,0,
+["nomad_cap_b", "Nomad Leather Cap", [("nomad_cap_b_new",0)], itp_merchandise| itp_type_head_armor |itp_civilian  ,0,
  6 , weight(0.75)|abundance(100)|head_armor(13)|body_armor(0)|leg_armor(0)|difficulty(0) ,imodbits_cloth, [], [fac.culture_2, fac.culture_3]  ],
-["steppe_cap", "Steppe Cap", [("steppe_cap_a_new",0)], itp_merchandise| itp_type_head_armor  |itp_civilian ,0,
+["steppe_cap", "Nomad Warrior Cap", [("steppe_cap_a_new",0)], itp_merchandise| itp_type_head_armor  |itp_civilian ,0,
  14 , weight(1)|abundance(100)|head_armor(14)|body_armor(0)|leg_armor(0)|difficulty(0) ,imodbits_cloth, [], [fac.culture_2, fac.culture_3]  ],
-["leather_steppe_cap_a", "Steppe Cap", [("leather_steppe_cap_a_new",0)], itp_merchandise|itp_type_head_armor,0, 
+["leather_steppe_cap_a", "Fur Steppe Cap", [("leather_steppe_cap_a_new",0)], itp_merchandise|itp_type_head_armor,0, 
 24 , weight(1)|abundance(100)|head_armor(15)|body_armor(0)|leg_armor(0) ,imodbits_cloth, [], [fac.culture_2, fac.culture_3] ],
-["leather_steppe_cap_b", "Steppe Cap ", [("tattered_steppe_cap_b_new",0)], itp_merchandise|itp_type_head_armor,0, 
+["leather_steppe_cap_b", "Steppe Skullcap", [("tattered_steppe_cap_b_new",0)], itp_merchandise|itp_type_head_armor,0, 
 36 , weight(1)|abundance(100)|head_armor(16)|body_armor(0)|leg_armor(0) ,imodbits_cloth, [], [fac.culture_2, fac.culture_3] ],
-["leather_steppe_cap_c", "Steppe Cap", [("steppe_cap_a_new",0)], itp_merchandise|itp_type_head_armor,0,
+["leather_steppe_cap_c", "Steppe Warrior Cap", [("steppe_cap_a_new",0)], itp_merchandise|itp_type_head_armor,0,
  51 , weight(1)|abundance(100)|head_armor(16)|body_armor(0)|leg_armor(0) ,imodbits_cloth, [], [fac.culture_2, fac.culture_3] ],
-["leather_warrior_cap", "Leather Warrior Cap", [("skull_cap_new_b",0)], itp_merchandise| itp_type_head_armor  |itp_civilian ,0,
+["leather_warrior_cap", "Khergit Leather Helmet", [("skull_cap_new_b",0)], itp_merchandise| itp_type_head_armor  |itp_civilian ,0,
  14 , weight(1)|abundance(100)|head_armor(18)|body_armor(0)|leg_armor(0)|difficulty(0) ,imodbits_cloth, [], [fac.culture_3] ],
  
 # Swadian and Rhodok Helmets
@@ -592,19 +592,23 @@ items = [
  1240 , weight(2.75)|abundance(100)|head_armor(55)|body_armor(0)|leg_armor(0)|difficulty(10) ,imodbits_plate, [], [fac.culture_1, fac.culture_4] ],
 
 # Vaegir Helmets
-["vaegir_fur_cap", "Cap with Fur", [("vaeg_helmet3",0)], itp_merchandise| itp_type_head_armor   ,0,
+["vaegir_fur_cap", "Vaegir Skullcap", [("vaeg_helmet3",0)], itp_merchandise| itp_type_head_armor   ,0,
  50 , weight(1)|abundance(100)|head_armor(15)|body_armor(0)|leg_armor(0)|difficulty(7) ,imodbits_plate, [], [fac.culture_2, fac.culture_3] ],
 ["vaegir_fur_helmet", "Vaegir Helmet", [("vaeg_helmet2",0)], itp_merchandise| itp_type_head_armor   ,0,
  110 , weight(2)|abundance(100)|head_armor(21)|body_armor(0)|leg_armor(0)|difficulty(7) ,imodbits_plate, [], [fac.culture_2] ],
 ["vaegir_spiked_helmet", "Vaegir Spiked Helmet", [("vaeg_helmet1",0)], itp_merchandise| itp_type_head_armor   ,0,
  230 , weight(2.50)|abundance(100)|head_armor(32)|body_armor(0)|leg_armor(0)|difficulty(7) ,imodbits_plate, [], [fac.culture_2] ],
-["vaegir_lamellar_helmet", "Helmet with Lamellar Guard", [("vaeg_helmet4",0)], itp_merchandise| itp_type_head_armor   ,0,
+["vaegir_lamellar_helmet", "Vaegir Lamellar Helmet", [("vaeg_helmet4",0)], itp_merchandise| itp_type_head_armor   ,0,
  360 , weight(2.75)|abundance(100)|head_armor(38)|body_armor(0)|leg_armor(0)|difficulty(7) ,imodbits_plate, [], [fac.culture_2] ],
+["vaegir_guard_helmet", "Vaegir Guard Helmet", [("vaeg_helmet5",0)], itp_merchandise| itp_type_head_armor   ,0,
+ 650, weight(2.75)|abundance(100)|head_armor(42)|body_armor(0)|leg_armor(0)|difficulty(7) ,imodbits_plate, [], [fac.culture_2] ],
 ["vaegir_noble_helmet", "Vaegir Nobleman Helmet", [("vaeg_helmet7",0)], itp_merchandise| itp_type_head_armor   ,0,
  710, weight(2.75)|abundance(100)|head_armor(45)|body_armor(0)|leg_armor(0)|difficulty(7) ,imodbits_plate, [], [fac.culture_2] ],
+["vaegir_half_mask", "Vaegir Nobleman Mask", [("vaeg_helmet8",0)], itp_merchandise| itp_type_head_armor |itp_covers_beard ,0,
+ 750 , weight(3)|abundance(100)|head_armor(46)|body_armor(0)|leg_armor(0)|difficulty(7) ,imodbits_plate, [], [fac.culture_2] ],
 ["vaegir_war_helmet", "Vaegir War Helmet", [("vaeg_helmet6",0)], itp_merchandise| itp_type_head_armor   ,0,
  820 , weight(3)|abundance(100)|head_armor(47)|body_armor(0)|leg_armor(0)|difficulty(7) ,imodbits_plate, [], [fac.culture_2] ],
-["vaegir_mask", "Vaegir War Mask", [("vaeg_helmet9",0)], itp_merchandise| itp_type_head_armor |itp_covers_beard ,0,
+["vaegir_war_mask", "Vaegir War Mask", [("vaeg_helmet9",0)], itp_merchandise| itp_type_head_armor |itp_covers_beard ,0,
  950 , weight(3.50)|abundance(100)|head_armor(52)|body_armor(0)|leg_armor(0)|difficulty(7) ,imodbits_plate, [], [fac.culture_2] ],
 
 # Khergit Helmets

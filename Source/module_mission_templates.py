@@ -934,6 +934,25 @@ common_siege_check_defeat_condition = (
     (finish_mission,0),
     ])
 
+	
+
+common_battle_morale_check = (
+  0.1, 0, 0, [
+  (store_mission_timer_a_msec,":mission_time_ms"),
+  (ge,":mission_time_ms",10000),
+  (store_div,":mission_time_s",":mission_time_ms",1000),
+  (store_div,":mission_time_ticks",":mission_time_ms",100),
+  (try_for_agents, ":agent_no"),
+	(agent_is_human, ":agent_no"),
+	(agent_is_alive, ":agent_no"),          
+	# Only check every 50th agent each tick to reduce stutter
+	(store_mod,":ticks_mod",":mission_time_ticks",50),
+	(store_mod,":agent_mod",":agent_no",50),
+	(eq,":agent_mod",":ticks_mod"),
+	(call_script, "script_decide_run_away_or_not", ":agent_no", ":mission_time_s"),
+  (try_end),    
+	  ], [])
+	
 common_battle_order_panel = (
   0, 0, 0, [],
   [
@@ -2161,28 +2180,6 @@ mission_templates = [
        [
          (store_trigger_param_1, ":agent_no"),
          (call_script, "script_agent_reassign_team", ":agent_no"),
-
-         (assign, ":initial_courage_score", 5000),
-                  
-         (agent_get_troop_id, ":troop_id", ":agent_no"),
-         (store_character_level, ":troop_level", ":troop_id"),
-         (val_mul, ":troop_level", 35),
-         (val_add, ":initial_courage_score", ":troop_level"), #average : 20 * 35 = 700
-         
-         (store_random_in_range, ":randomized_addition_courage", 0, 3000), #average : 1500
-         (val_add, ":initial_courage_score", ":randomized_addition_courage"), 
-                   
-         (agent_get_party_id, ":agent_party", ":agent_no"),         
-         (party_get_morale, ":cur_morale", ":agent_party"),
-         
-         (store_sub, ":morale_effect_on_courage", ":cur_morale", 70),
-         (val_mul, ":morale_effect_on_courage", 30), #this can effect morale with -2100..900
-         (val_add, ":initial_courage_score", ":morale_effect_on_courage"), 
-         
-         #average = 5000 + 700 + 1500 = 7200; min : 5700, max : 8700
-         #morale effect = min : -2100(party morale is 0), average : 0(party morale is 70), max : 900(party morale is 100)
-         #min starting : 3600, max starting  : 9600, average starting : 7200
-         (agent_set_slot, ":agent_no", slot_agent_courage_score, ":initial_courage_score"), 
          ]),
 
       common_battle_init_banner,
@@ -2190,7 +2187,7 @@ mission_templates = [
       (ti_on_agent_killed_or_wounded, 0, 0, [],
        [
         (store_trigger_param_1, ":dead_agent_no"),
-        (store_trigger_param_2, ":killer_agent_no"),
+        (store_trigger_param_2, ":unused"),
         (store_trigger_param_3, ":is_wounded"),
 
         (try_begin),
@@ -2202,8 +2199,6 @@ mission_templates = [
           (eq, ":is_wounded", 1),
           (party_wound_members, "p_total_enemy_casualties", ":dead_agent_troop_id", 1), 
         (try_end),
-
-        (call_script, "script_apply_death_effect_on_courage_scores", ":dead_agent_no", ":killer_agent_no"),
        ]),
 
       common_battle_tab_press,
@@ -2313,22 +2308,7 @@ mission_templates = [
           ],
        [(call_script, "script_select_battle_tactic"),
         (call_script, "script_battle_tactic_init"),
-        #(call_script, "script_battle_calculate_initial_powers"), #deciding run away method changed and that line is erased
         ]),
-      
-      (3, 0, 0, [
-          (call_script, "script_apply_effect_of_other_people_on_courage_scores"),
-              ], []), #calculating and applying effect of people on others courage scores
-
-      (3, 0, 0, [
-          (try_for_agents, ":agent_no"),
-            (agent_is_human, ":agent_no"),
-            (agent_is_alive, ":agent_no"),          
-            (store_mission_timer_a,":mission_time"),
-            (ge,":mission_time",3),          
-            (call_script, "script_decide_run_away_or_not", ":agent_no", ":mission_time"),
-          (try_end),          
-              ], []), #controlling courage score and if needed deciding to run away for each agent
 
       (5, 0, 0, [
           (store_mission_timer_a,":mission_time"),
@@ -2338,6 +2318,7 @@ mission_templates = [
           (call_script, "script_battle_tactic_apply"),
           ], []), #applying battle tactic
 
+      common_battle_morale_check,
       common_battle_order_panel,
       common_battle_order_panel_tick,
 
@@ -2394,6 +2375,7 @@ mission_templates = [
               (finish_mission, 0)]),
 
       common_battle_inventory,      
+      common_battle_morale_check,
       common_battle_order_panel,
       common_battle_order_panel_tick,
       
@@ -2481,6 +2463,7 @@ mission_templates = [
               (finish_mission,0)]),
 
       common_battle_inventory,
+      common_battle_morale_check,
       common_battle_order_panel,
       common_battle_order_panel_tick,
     ],
@@ -5817,7 +5800,7 @@ mission_templates = [
           (assign, "$g_battle_result", 0),
           (call_script, "script_combat_music_set_situation_with_culture"),
          ]),
-
+      common_battle_morale_check,
       common_music_situation_update,
       custom_battle_check_victory_condition,
       common_battle_victory_display,
@@ -11721,9 +11704,6 @@ mission_templates = [
             (add_visitors_to_current_scene, ":random_entry_point", ":bandit_troop", 1),
           (try_end),
         (try_end),
-
-        #no need to adjust courage in bandit lair for now
-        #(call_script, "script_apply_death_effect_on_courage_scores", ":dead_agent_no", ":killer_agent_no"),
        ]),
 
       (0, 0, ti_once, [],

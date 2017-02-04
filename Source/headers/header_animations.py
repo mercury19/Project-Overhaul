@@ -1,3 +1,4 @@
+from compiler import *
 arf_blend_in_0               = 0x00000001
 arf_blend_in_1               = 0x00000002
 arf_blend_in_2               = 0x00000003

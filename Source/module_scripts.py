@@ -15101,427 +15101,16 @@ scripts = [
       (try_end),
   ]),
 
-  # script.calculate_team_powers
-  # Input: none
-  # Output: ally_power, enemy_power
-  ("calculate_team_powers",
-     [
-       (store_script_param, ":agent_no", 1),
-
-       (try_begin),
-         (assign, ":agent_side", 0),
-         (agent_is_ally, ":agent_no"),
-         (assign, ":agent_side", 1),
-       (try_end),
-
-       (assign, ":ally_power", 0),
-       (assign, ":enemy_power", 0),
-       
-       (try_for_agents, ":cur_agent"),
-         (agent_is_human, ":cur_agent"),
-         (agent_is_alive, ":cur_agent"),
-       
-         (try_begin),
-           (assign, ":agent_side_cur", 0),
-           (agent_is_ally, ":cur_agent"),
-           (assign, ":agent_side_cur", 1),
-         (try_end),
-
-         (try_begin),
-           (agent_get_horse, ":agent_horse_id", ":cur_agent"),
-           (neq, ":agent_horse_id", -1),
-           (assign, ":agent_power", 2), #if this agent is horseman then his power effect is 2
-         (else_try),
-           (assign, ":agent_power", 1), #if this agent is walker then his power effect is 1
-         (try_end),
-       
-         (try_begin),
-           (eq, ":agent_side", ":agent_side_cur"),
-           (val_add, ":ally_power", ":agent_power"),
-         (else_try),
-           (val_add, ":enemy_power", ":agent_power"),       
-         (try_end),
-       (try_end),
-          
-       (assign, reg0, ":ally_power"),         
-       (assign, reg1, ":enemy_power"),         
-  ]), #ozan
-
-  # script.apply_effect_of_other_people_on_courage_scores
-  # Input: none
-  # Output: none
-  ("apply_effect_of_other_people_on_courage_scores",
-    [
-      (get_player_agent_no, ":player_agent"),
-
-      (try_for_agents, ":centered_agent_no"),
-        (agent_is_human, ":centered_agent_no"),
-        (agent_is_alive, ":centered_agent_no"),
-        (neq, ":centered_agent_no", ":player_agent"),
-        (agent_get_position, pos0, ":centered_agent_no"),
-        (try_begin),
-          (agent_is_ally, ":centered_agent_no"),
-          (assign, ":is_centered_agent_ally", 1),
-        (else_try),
-          (assign, ":is_centered_agent_ally", 0),
-        (try_end),
-       
-        (try_for_agents, ":agent_no"),
-          (agent_is_human, ":agent_no"),
-          (agent_is_alive, ":agent_no"),
-          (neq, ":centered_agent_no", ":agent_no"),      
-
-          (try_begin),
-            (agent_is_ally, ":agent_no"),
-            (assign, ":is_agent_ally", 1),
-          (else_try),
-            (assign, ":is_agent_ally", 0),
-          (try_end),
-
-          (eq, ":is_centered_agent_ally", ":is_agent_ally"), #if centered agent and other agent is at same team then continue.
-          (agent_get_slot, ":agent_is_running_away_or_not", ":agent_no", slot_agent_is_running_away),
-
-          (try_begin),
-            (eq, ":agent_no", ":player_agent"),
-            (assign, ":agent_delta_courage_score", 6),
-          (else_try),
-            (agent_get_troop_id, ":troop_id", ":agent_no"),
-            (troop_is_hero, ":troop_id"),
-      
-            #Hero Agent : if near agent (hero, agent_no) is not running away his positive effect on centered agent (centered_agent_no) fighting at his side is effected by his hit points.
-            (try_begin),      
-              (neq, ":agent_is_running_away_or_not", 1), #if agent is not running away
-              (store_agent_hit_points, ":agent_hit_points", ":agent_no"),
-              (try_begin),
-                (eq, ":agent_hit_points", 100),
-                (assign, ":agent_delta_courage_score", 6),
-              (else_try),
-                (ge, ":agent_hit_points", 75),
-                (assign, ":agent_delta_courage_score", 5),
-              (else_try),
-                (ge, ":agent_hit_points", 60),
-                (assign, ":agent_delta_courage_score", 4),
-              (else_try),
-                (ge, ":agent_hit_points", 45),
-                (assign, ":agent_delta_courage_score", 3),
-              (else_try),
-                (ge, ":agent_hit_points", 30),
-                (assign, ":agent_delta_courage_score", 2),
-              (else_try),
-                (ge, ":agent_hit_points", 15),
-                (assign, ":agent_delta_courage_score", 1),
-              (end_try),
-            (else_try),
-              (assign, ":agent_delta_courage_score", 4),
-            (end_try),
-          (else_try),
-            #Normal Agent : if near agent (agent_no) is not running away his positive effect on centered agent (centered_agent_no) fighting at his side is effected by his hit points.
-            (try_begin),      
-              (neq, ":agent_is_running_away_or_not", 1), # if agent is not running away
-              (store_agent_hit_points, ":agent_hit_points", ":agent_no"),
-              (try_begin),
-                (eq, ":agent_hit_points", 100),
-                (assign, ":agent_delta_courage_score", 4),
-              (else_try),
-                (ge, ":agent_hit_points", 75),
-                (assign, ":agent_delta_courage_score", 3),
-              (else_try),
-                (ge, ":agent_hit_points", 50),
-                (assign, ":agent_delta_courage_score", 2),
-              (else_try),
-                (ge, ":agent_hit_points", 25),
-                (assign, ":agent_delta_courage_score", 1),
-              (try_end),
-              (try_begin), # to make our warrior run away easier we decrease one, because they have player_agent (+6) advantage.
-                (agent_is_ally, ":agent_no"),
-                (val_sub, ":agent_delta_courage_score", 1),
-              (try_end),
-            (else_try),
-              (assign, ":agent_delta_courage_score", 2),
-            (end_try),
-          (try_end),
-      
-          (try_begin),
-            (neq, ":agent_is_running_away_or_not", 1),
-            (val_mul, ":agent_delta_courage_score", 1),
-            (try_begin), # centered agent not running away cannot take positive courage score from one another agent not running away.
-              (agent_get_slot, ":agent_is_running_away_or_not", ":centered_agent_no", slot_agent_is_running_away),
-              (eq, ":agent_is_running_away_or_not", 0),
-              (val_mul, ":agent_delta_courage_score", 0),
-            (try_end),
-          (else_try),
-            (try_begin), 
-              (agent_get_slot, ":agent_is_running_away_or_not", ":agent_no", slot_agent_is_running_away),
-              (eq, ":agent_is_running_away_or_not", 0),
-              (val_mul, ":agent_delta_courage_score", -2), # running away agent fears not running away agent more.
-            (else_try),
-              (val_mul, ":agent_delta_courage_score", -1),
-            (try_end),
-          (try_end),
-
-          (neq, ":agent_delta_courage_score", 0),
-
-          (agent_get_position, pos1, ":agent_no"),
-          (get_distance_between_positions, ":dist", pos0, pos1),
-
-          (try_begin),
-            (ge, ":agent_delta_courage_score", 0),
-            (try_begin),
-              (lt, ":dist", 2000), #0-20 meter
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 50),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 4000), #21-40 meter
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 40),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 7000), #41-70 meter
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 30),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 11000), #71-110 meter
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 20),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),      
-              (lt, ":dist", 16000), # 111-160 meter, assumed that eye can see agents friendly at most 160 meters far while fighting. 
-                                    # this is more than below limit (108 meters) because we hear that allies come from further.
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 10),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (try_end),      
-          (else_try),                                               # negative effect of running agent on other ally agents are lower then positive effects above, to avoid starting  
-            (try_begin),                                            # run away of all agents at a moment. I want to see agents running away one by one during battle, not all together.
-              (lt, ":dist", 200), #1-2 meter,                       # this would create better game play.
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 15),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 400), #3-4 meter, 
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 13),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 600), #5-6 meter
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 11),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 800), #7-8 meter
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 9),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 1200), #9-12 meters
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 7),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 2400), #13-24 meters
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 5),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 4800), #25-48 meters
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 3),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (else_try),
-              (lt, ":dist", 9600), #49-98 meters, assumed that eye can see agents running away at most 98 meters far while fighting.
-              (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
-              (val_mul, ":agent_delta_courage_score", 1),
-              (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-              (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (try_end),      
-          (try_end),
-        (try_end),            
-      (try_end),
-  ]), #ozan
-
-  
-  # script.apply_death_effect_on_courage_scores
-  # Input: dead agent id, killer agent id
-  # Output: none
-  ("apply_death_effect_on_courage_scores",
-    [
-      (store_script_param, ":dead_agent_no", 1),
-      (store_script_param, ":killer_agent_no", 2),
-      
-      (try_begin),
-        (agent_is_human, ":dead_agent_no"),
-
-        (try_begin),
-          (agent_is_ally, ":dead_agent_no"),
-          (assign, ":is_dead_agent_ally", 1),
-        (else_try),
-          (assign, ":is_dead_agent_ally", 0),
-        (try_end),
-
-        (agent_get_position, pos0, ":dead_agent_no"),
-        (assign, ":number_of_near_allies_to_dead_agent", 0),
-
-        (try_for_agents, ":agent_no"),
-          (agent_is_human, ":agent_no"),
-          (agent_is_alive, ":agent_no"),
-
-          (agent_get_position, pos1, ":agent_no"), 
-          (get_distance_between_positions, ":dist", pos0, pos1),
-
-          (le, ":dist", 1300), # to count number of allies within 13 meters to dead agent.
-
-          (try_begin),
-            (agent_is_ally, ":agent_no"),
-            (assign, ":is_agent_ally", 1),
-          (else_try),
-            (assign, ":is_agent_ally", 0),
-          (try_end),
-
-          (try_begin), 
-            (eq, ":is_dead_agent_ally", ":is_agent_ally"),
-            (val_add, ":number_of_near_allies_to_dead_agent", 1), # (number_of_near_allies_to_dead_agent) is counted because if there are 
-          (try_end),                                              # many allies of dead agent around him, negative courage effect become less.
-        (try_end),
-                
-        (try_for_agents, ":agent_no"),
-          (agent_is_human, ":agent_no"),
-          (agent_is_alive, ":agent_no"),
-           
-          (try_begin),
-            (agent_is_ally, ":agent_no"),
-            (assign, ":is_agent_ally", 1),
-          (else_try),
-            (assign, ":is_agent_ally", 0),
-          (try_end),
-   
-          (try_begin), # each agent is effected by a killed agent positively if he is rival or negatively if he is ally.
-            (neq, ":is_dead_agent_ally", ":is_agent_ally"), 
-            (assign, ":agent_delta_courage_score", 10),  # if killed agent is agent of rival side, add points to fear score
-          (else_try),          
-            (assign, ":agent_delta_courage_score", -15), # if killed agent is agent of our side, decrease points from fear score
-            (val_add, ":agent_delta_courage_score", ":number_of_near_allies_to_dead_agent"), # ":number_of_near_allies_to_dead_agent" is added because if there are many
-            (try_begin),                                                                     # allies of dead agent around him, negative courage effect become less.
-              (gt, ":agent_delta_courage_score", -5),
-              (assign, ":agent_delta_courage_score", -5),
-            (try_end),
-
-            (agent_get_slot, ":dead_agent_was_running_away_or_not", ":dead_agent_no",  slot_agent_is_running_away), #look dead agent was running away or not. 
-            (try_begin),
-              (eq, ":dead_agent_was_running_away_or_not", 1),      
-              (val_div, ":agent_delta_courage_score", 3),  # if killed agent was running away his negative effect on ally courage scores become very less. This added because
-            (try_end),                                     # running away agents are easily killed and courage scores become very in a running away group after a time, and
-          (try_end),                                       # they do not stop running away althought they pass near a new powerfull ally party.                 
-          (agent_get_position, pos1, ":agent_no"), 
-          (get_distance_between_positions, ":dist", pos0, pos1),
-
-          (try_begin),
-            (eq, ":killer_agent_no", ":agent_no"),
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 20),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (try_end),
-        
-          (try_begin),
-            (lt, ":dist", 100), #0-1 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 150),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 200), #2 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 120),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 300), #3 meter
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 100),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 400), #4 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 90),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 600), #5-6 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 80),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 800), #7-8 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 70),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 1000), #9-10 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 60),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 1500), #11-15 meter
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 50),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 2500), #16-25 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 40),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 4000), #26-40 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 30),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 6500), #41-65 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 20),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (else_try),
-            (lt, ":dist", 10000), #61-100 meters
-            (agent_get_slot, ":agent_courage_score", ":agent_no", slot_agent_courage_score),
-            (val_mul, ":agent_delta_courage_score", 10),
-            (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
-            (agent_set_slot, ":agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-          (try_end),
-        (try_end),
-      (try_end),
-      ]), #ozan
-
   # script.decide_run_away_or_not
   # Input: none
   # Output: none
   ("decide_run_away_or_not",
     [
       (store_script_param, ":cur_agent", 1),
-      (store_script_param, ":mission_time", 2),
+      (store_script_param, ":unused", 2),
       
       (assign, ":force_retreat", 0),
+      (assign, ":local_potential", 0), # Each non-routed troop affects local "potential" with Level/Distance^2, sign depends on team.
       (agent_get_team, ":agent_team", ":cur_agent"),
       (agent_get_division, ":agent_division", ":cur_agent"),
       (try_begin),
@@ -15529,7 +15118,70 @@ scripts = [
         (team_get_movement_order, ":agent_movement_order", ":agent_team", ":agent_division"),
         (eq, ":agent_movement_order", mordr_retreat),
         (assign, ":force_retreat", 1),
+	  (else_try), # Only need to calculate "potential" if retreat was not ordered
+		(agent_get_position, pos0, ":cur_agent"), 
+	    (try_for_agents, ":other_agent"),
+		  # First, make sure the other agent is actually a combatant
+		  (agent_is_human, ":other_agent"),
+		  (agent_is_active, ":other_agent"),
+		  (agent_is_alive, ":other_agent"),
+		  (neg|agent_is_wounded, ":other_agent"),
+		  (neg|agent_is_routed, ":other_agent"),
+		  (neq, ":cur_agent", ":other_agent"),
+		  (agent_get_troop_id, ":other_troop", ":other_agent"),
+		  (ge, ":other_troop", 0), # Just in case
+		  # Second, calculate the agent's local effect
+		  (agent_get_position, pos1, ":other_agent"), 
+          (get_sq_distance_between_positions, ":dist2", pos0, pos1), # cm^2
+		  (le, ":dist2", 100000000), # Ignore troops further away than 100 m
+		  (val_max, ":dist2", 10000), # Closer than 1m does not increase effect
+		  (store_character_level, ":other_level", ":other_troop"),
+		  (store_mul, ":delta_phi", ":other_level", 1000000),
+		  (val_div, ":delta_phi", ":dist2"),
+		  (try_begin),
+		    (agent_slot_eq, ":other_agent", slot_agent_is_running_away, 1),
+			(try_begin),
+			  (agent_slot_eq, ":cur_agent", slot_agent_is_running_away, 0),
+		      (val_mul, ":delta_phi", -1),
+			(else_try),
+		      (assign, ":delta_phi", 0), # Otherwise, rallying routed troops is impossible
+			(try_end),
+		  (try_end),
+		  # Finally, apply it to the local potential
+		  (try_begin),
+		    (agent_get_team, ":other_team", ":other_agent"),
+		    (teams_are_enemies, ":agent_team", ":other_team"), 
+			(val_sub, ":local_potential", ":delta_phi"),
+		  (else_try),
+			(try_begin),
+		      (troop_is_hero, ":other_troop"),
+			  (val_mul, ":delta_phi", 10),
+			  (agent_get_item_slot, ":helmet", ":other_agent", 4),
+			  (try_begin),
+			    (lt, ":helmet", 0),
+			    (val_mul, ":delta_phi", 2), # Recognizing their leader gives a morale boost
+			  (else_try),
+			    (item_get_head_armor, ":head_armor", ":helmet"),
+			    (lt, ":head_armor", 10), # This is probably a hat, not a helmet
+			    (val_mul, ":delta_phi", 2),
+			  (try_end),
+			(else_try),
+		      (agent_get_horse, ":horse", ":other_troop"),
+			  (ge, ":horse", 0),
+			  (val_mul, ":delta_phi", 2),
+			(try_end),
+			(val_add, ":local_potential", ":delta_phi"),
+		  (try_end),
+		(try_end),
       (try_end),
+	  
+	  (agent_get_troop_id, ":troop_id", ":cur_agent"),
+	  (store_character_level, ":troop_lvl", ":troop_id"),
+	  (store_agent_hit_points, ":agent_health", ":cur_agent"),
+	  (store_mul, ":rout_threshold", ":troop_lvl", ":agent_health"),
+	  (store_mul, ":rout_threshold", ":troop_lvl", -10),
+	  (store_sub, ":rally_threshold", 100, ":agent_health"),
+	  (val_mul, ":rally_threshold", 10),
 
       (agent_get_slot, ":is_cur_agent_running_away", ":cur_agent", slot_agent_is_running_away),
       (try_begin),
@@ -15539,40 +15191,28 @@ scripts = [
           (agent_start_running_away, ":cur_agent"),
           (agent_set_slot, ":cur_agent",  slot_agent_is_running_away, 1),
         (else_try),
-          (ge, ":mission_time", 45), #first 45 seconds anyone does not run away whatever happens.
-          (agent_get_slot, ":agent_courage_score", ":cur_agent",  slot_agent_courage_score),
-          (store_agent_hit_points, ":agent_hit_points", ":cur_agent"),
-          (val_mul, ":agent_hit_points", 4),
-          (try_begin),
-            (agent_is_ally, ":cur_agent"),
-            (val_sub, ":agent_hit_points", 100), #ally agents will be more tend to run away, to make game more funnier/harder
-          (try_end),
-          (val_mul, ":agent_hit_points", 10),
-          (store_sub, ":start_running_away_courage_score_limit", 3500, ":agent_hit_points"), 
-          (lt, ":agent_courage_score", ":start_running_away_courage_score_limit"), #if (courage score < 3500 - (agent hit points * 40)) and (agent is not running away) then start running away, average hit points : 50, average running away limit = 1500
-
-          (agent_get_troop_id, ":troop_id", ":cur_agent"), #for now do not let heroes to run away from battle
-          (neg|troop_is_hero, ":troop_id"),
-                                
+          (neg|troop_is_hero, ":troop_id"), #for now do not let heroes run away from battle
+		  (lt, ":local_potential", ":rout_threshold"),
           (agent_start_running_away, ":cur_agent"),
           (agent_set_slot, ":cur_agent",  slot_agent_is_running_away, 1),
+		  (str_store_agent_name, s1, ":cur_agent"),
+		  (try_begin),
+		    (agent_is_ally, ":cur_agent"),
+		    (display_message, "@{s1} has routed!", 0xBBBB22),
+		  (else_try),
+		    (display_message, "@{s1} has routed!", 0x22BB77),
+		  (try_end),
         (try_end),
       (else_try),
         (neq, ":force_retreat", 1),
-        (agent_get_slot, ":agent_courage_score", ":cur_agent",  slot_agent_courage_score),
-        (store_agent_hit_points, ":agent_hit_points", ":cur_agent"),      
-        (val_mul, ":agent_hit_points", 4),
-        (try_begin),
-          (agent_is_ally, ":cur_agent"),
-          (val_sub, ":agent_hit_points", 100), #ally agents will be more tend to run away, to make game more funnier/harder
-        (try_end),
-        (val_mul, ":agent_hit_points", 10),
-        (store_sub, ":stop_running_away_courage_score_limit", 3700, ":agent_hit_points"), 
-        (ge, ":agent_courage_score", ":stop_running_away_courage_score_limit"), #if (courage score > 3700 - agent hit points) and (agent is running away) then stop running away, average hit points : 50, average running away limit = 1700
-        (agent_stop_running_away, ":cur_agent"),
+		(ge, ":local_potential", ":rally_threshold"),
+		(agent_stop_running_away, ":cur_agent"),
         (agent_set_slot, ":cur_agent",  slot_agent_is_running_away, 0),
+		(agent_is_ally, ":cur_agent"),
+		(str_store_agent_name, s1, ":cur_agent"),
+		(display_message, "@{s1} has rallied!", 0x77BB22),
       (try_end),      
-  ]), #ozan
+  ]),
 
   # script.battle_tactic_apply
   # Input: none
@@ -18368,12 +18008,12 @@ scripts = [
       (faction_set_slot, "fac_commoners",  slot_faction_tier_4_troop, "trp_mercenary_swordsman"),
       (faction_set_slot, "fac_commoners",  slot_faction_tier_5_troop, "trp_hired_blade"),
 	  
-      (faction_set_slot, "fac_commoners", slot_faction_town_walker_male_troop, "trp_town_walker_1"),
-      (faction_set_slot, "fac_commoners", slot_faction_town_walker_female_troop, "trp_town_walker_2"),
-      (faction_set_slot, "fac_commoners", slot_faction_village_walker_male_troop, "trp_village_walker_1"),
-      (faction_set_slot, "fac_commoners", slot_faction_village_walker_female_troop, "trp_village_walker_2"),
-      (faction_set_slot, "fac_commoners", slot_faction_town_spy_male_troop, "trp_spy_walker_1"),
-      (faction_set_slot, "fac_commoners", slot_faction_town_spy_female_troop, "trp_spy_walker_2"),
+      (faction_set_slot, "fac_commoners", slot_faction_town_walker_male_troop, "trp_town_walker_m"),
+      (faction_set_slot, "fac_commoners", slot_faction_town_walker_female_troop, "trp_town_walker_f"),
+      (faction_set_slot, "fac_commoners", slot_faction_village_walker_male_troop, "trp_village_walker_m"),
+      (faction_set_slot, "fac_commoners", slot_faction_village_walker_female_troop, "trp_village_walker_f"),
+      (faction_set_slot, "fac_commoners", slot_faction_town_spy_male_troop, "trp_spy_walker_m"),
+      (faction_set_slot, "fac_commoners", slot_faction_town_spy_female_troop, "trp_spy_walker_f"),
 	  
 	  (faction_set_slot, "fac_commoners",  slot_faction_bandit_troop, "trp_bandit"),
 	  (faction_set_slot, "fac_commoners",  slot_faction_guard_troop, "trp_hired_blade"),
@@ -18390,12 +18030,12 @@ scripts = [
       (faction_set_slot, "fac_culture_1",  slot_faction_tier_4_troop, "trp_swadian_infantry"),
       (faction_set_slot, "fac_culture_1",  slot_faction_tier_5_troop, "trp_swadian_knight"),
 
-      (faction_set_slot, "fac_culture_1", slot_faction_town_walker_male_troop, "trp_town_walker_1"),
-      (faction_set_slot, "fac_culture_1", slot_faction_town_walker_female_troop, "trp_town_walker_2"),
-      (faction_set_slot, "fac_culture_1", slot_faction_village_walker_male_troop, "trp_village_walker_1"),
-      (faction_set_slot, "fac_culture_1", slot_faction_village_walker_female_troop, "trp_village_walker_2"),
-      (faction_set_slot, "fac_culture_1", slot_faction_town_spy_male_troop, "trp_spy_walker_1"),
-      (faction_set_slot, "fac_culture_1", slot_faction_town_spy_female_troop, "trp_spy_walker_2"),
+      (faction_set_slot, "fac_culture_1", slot_faction_town_walker_male_troop, "trp_town_walker_1_m"),
+      (faction_set_slot, "fac_culture_1", slot_faction_town_walker_female_troop, "trp_town_walker_1_f"),
+      (faction_set_slot, "fac_culture_1", slot_faction_village_walker_male_troop, "trp_village_walker_m"),
+      (faction_set_slot, "fac_culture_1", slot_faction_village_walker_female_troop, "trp_village_walker_f"),
+      (faction_set_slot, "fac_culture_1", slot_faction_town_spy_male_troop, "trp_spy_walker_m"),
+      (faction_set_slot, "fac_culture_1", slot_faction_town_spy_female_troop, "trp_spy_walker_f"),
 	  
 	  (faction_set_slot, "fac_culture_1",  slot_faction_bandit_troop, "trp_forest_bandit"),
 	  (faction_set_slot, "fac_culture_1",  slot_faction_guard_troop, "trp_swadian_sergeant"),
@@ -18412,12 +18052,12 @@ scripts = [
       (faction_set_slot, "fac_culture_2", slot_faction_tier_4_troop, "trp_vaegir_infantry"),
       (faction_set_slot, "fac_culture_2", slot_faction_tier_5_troop, "trp_vaegir_knight"),
 
-      (faction_set_slot, "fac_culture_2", slot_faction_town_walker_male_troop, "trp_town_walker_1"),
-      (faction_set_slot, "fac_culture_2", slot_faction_town_walker_female_troop, "trp_town_walker_2"),
-      (faction_set_slot, "fac_culture_2", slot_faction_village_walker_male_troop, "trp_village_walker_1"),
-      (faction_set_slot, "fac_culture_2", slot_faction_village_walker_female_troop, "trp_village_walker_2"),
-      (faction_set_slot, "fac_culture_2", slot_faction_town_spy_male_troop, "trp_spy_walker_1"),
-      (faction_set_slot, "fac_culture_2", slot_faction_town_spy_female_troop, "trp_spy_walker_2"),
+      (faction_set_slot, "fac_culture_2", slot_faction_town_walker_male_troop, "trp_town_walker_2_m"),
+      (faction_set_slot, "fac_culture_2", slot_faction_town_walker_female_troop, "trp_town_walker_2_f"),
+      (faction_set_slot, "fac_culture_2", slot_faction_village_walker_male_troop, "trp_village_walker_m"),
+      (faction_set_slot, "fac_culture_2", slot_faction_village_walker_female_troop, "trp_village_walker_f"),
+      (faction_set_slot, "fac_culture_2", slot_faction_town_spy_male_troop, "trp_spy_walker_m"),
+      (faction_set_slot, "fac_culture_2", slot_faction_town_spy_female_troop, "trp_spy_walker_f"),
 
 	  (faction_set_slot, "fac_culture_2", slot_faction_bandit_troop, "trp_taiga_bandit"),
 	  (faction_set_slot, "fac_culture_2", slot_faction_guard_troop, "trp_vaegir_guard"),
@@ -18434,12 +18074,12 @@ scripts = [
       (faction_set_slot, "fac_culture_3", slot_faction_tier_4_troop, "trp_khergit_horse_archer"),
       (faction_set_slot, "fac_culture_3", slot_faction_tier_5_troop, "trp_khergit_veteran_horse_archer"),
 
-      (faction_set_slot, "fac_culture_3", slot_faction_town_walker_male_troop, "trp_khergit_townsman"),
-      (faction_set_slot, "fac_culture_3", slot_faction_town_walker_female_troop, "trp_khergit_townswoman"),
-      (faction_set_slot, "fac_culture_3", slot_faction_village_walker_male_troop, "trp_khergit_townsman"),
-      (faction_set_slot, "fac_culture_3", slot_faction_village_walker_female_troop, "trp_khergit_townswoman"),
-      (faction_set_slot, "fac_culture_3", slot_faction_town_spy_male_troop, "trp_spy_walker_1"),
-      (faction_set_slot, "fac_culture_3", slot_faction_town_spy_female_troop, "trp_spy_walker_2"),
+      (faction_set_slot, "fac_culture_3", slot_faction_town_walker_male_troop, "trp_town_walker_3_m"),
+      (faction_set_slot, "fac_culture_3", slot_faction_town_walker_female_troop, "trp_town_walker_3_f"),
+      (faction_set_slot, "fac_culture_3", slot_faction_village_walker_male_troop, "trp_village_walker_3_m"),
+      (faction_set_slot, "fac_culture_3", slot_faction_village_walker_female_troop, "trp_village_walker_3_f"),
+      (faction_set_slot, "fac_culture_3", slot_faction_town_spy_male_troop, "trp_spy_walker_3_m"),
+      (faction_set_slot, "fac_culture_3", slot_faction_town_spy_female_troop, "trp_spy_walker_3_f"),
 
 	  (faction_set_slot, "fac_culture_3", slot_faction_bandit_troop, "trp_steppe_bandit"),
 	  (faction_set_slot, "fac_culture_3", slot_faction_guard_troop, "trp_khergit_horseman"),
@@ -18456,12 +18096,12 @@ scripts = [
       (faction_set_slot, "fac_culture_4", slot_faction_tier_4_troop, "trp_nord_warrior"),
       (faction_set_slot, "fac_culture_4", slot_faction_tier_5_troop, "trp_nord_veteran"),
 
-      (faction_set_slot, "fac_culture_4", slot_faction_town_walker_male_troop, "trp_town_walker_1"),
-      (faction_set_slot, "fac_culture_4", slot_faction_town_walker_female_troop, "trp_town_walker_2"),
-      (faction_set_slot, "fac_culture_4", slot_faction_village_walker_male_troop, "trp_village_walker_1"),
-      (faction_set_slot, "fac_culture_4", slot_faction_village_walker_female_troop, "trp_village_walker_2"),
-      (faction_set_slot, "fac_culture_4", slot_faction_town_spy_male_troop, "trp_spy_walker_1"),
-      (faction_set_slot, "fac_culture_4", slot_faction_town_spy_female_troop, "trp_spy_walker_2"),
+      (faction_set_slot, "fac_culture_4", slot_faction_town_walker_male_troop, "trp_town_walker_4_m"),
+      (faction_set_slot, "fac_culture_4", slot_faction_town_walker_female_troop, "trp_town_walker_4_f"),
+      (faction_set_slot, "fac_culture_4", slot_faction_village_walker_male_troop, "trp_village_walker_m"),
+      (faction_set_slot, "fac_culture_4", slot_faction_village_walker_female_troop, "trp_village_walker_f"),
+      (faction_set_slot, "fac_culture_4", slot_faction_town_spy_male_troop, "trp_spy_walker_m"),
+      (faction_set_slot, "fac_culture_4", slot_faction_town_spy_female_troop, "trp_spy_walker_f"),
 
 	  (faction_set_slot, "fac_culture_4", slot_faction_bandit_troop, "trp_sea_raider"),
 	  (faction_set_slot, "fac_culture_4", slot_faction_guard_troop, "trp_nord_warrior"),
@@ -18478,12 +18118,12 @@ scripts = [
       (faction_set_slot, "fac_culture_5", slot_faction_tier_4_troop, "trp_rhodok_veteran_spearman"),
       (faction_set_slot, "fac_culture_5", slot_faction_tier_5_troop, "trp_rhodok_sergeant"),
 
-      (faction_set_slot, "fac_culture_5", slot_faction_town_walker_male_troop, "trp_town_walker_1"),
-      (faction_set_slot, "fac_culture_5", slot_faction_town_walker_female_troop, "trp_town_walker_2"),
-      (faction_set_slot, "fac_culture_5", slot_faction_village_walker_male_troop, "trp_village_walker_1"),
-      (faction_set_slot, "fac_culture_5", slot_faction_village_walker_female_troop, "trp_village_walker_2"),
-      (faction_set_slot, "fac_culture_5", slot_faction_town_spy_male_troop, "trp_spy_walker_1"),
-      (faction_set_slot, "fac_culture_5", slot_faction_town_spy_female_troop, "trp_spy_walker_2"),
+      (faction_set_slot, "fac_culture_5", slot_faction_town_walker_male_troop, "trp_town_walker_5_m"),
+      (faction_set_slot, "fac_culture_5", slot_faction_town_walker_female_troop, "trp_town_walker_5_f"),
+      (faction_set_slot, "fac_culture_5", slot_faction_village_walker_male_troop, "trp_village_walker_m"),
+      (faction_set_slot, "fac_culture_5", slot_faction_village_walker_female_troop, "trp_village_walker_f"),
+      (faction_set_slot, "fac_culture_5", slot_faction_town_spy_male_troop, "trp_spy_walker_m"),
+      (faction_set_slot, "fac_culture_5", slot_faction_town_spy_female_troop, "trp_spy_walker_f"),
 
 	  (faction_set_slot, "fac_culture_5", slot_faction_bandit_troop, "trp_mountain_bandit"),
 	  (faction_set_slot, "fac_culture_5", slot_faction_guard_troop, "trp_rhodok_veteran_spearman"),
@@ -18500,12 +18140,12 @@ scripts = [
       (faction_set_slot, "fac_culture_6", slot_faction_tier_4_troop, "trp_sarranid_horseman"),
       (faction_set_slot, "fac_culture_6", slot_faction_tier_5_troop, "trp_sarranid_mamluke"),
 
-      (faction_set_slot, "fac_culture_6", slot_faction_town_walker_male_troop, "trp_sarranid_townsman"),
-      (faction_set_slot, "fac_culture_6", slot_faction_town_walker_female_troop, "trp_sarranid_townswoman"),
-      (faction_set_slot, "fac_culture_6", slot_faction_village_walker_male_troop, "trp_sarranid_townsman"),
-      (faction_set_slot, "fac_culture_6", slot_faction_village_walker_female_troop, "trp_sarranid_townswoman"),
-      (faction_set_slot, "fac_culture_6", slot_faction_town_spy_male_troop, "trp_spy_walker_1"),
-      (faction_set_slot, "fac_culture_6", slot_faction_town_spy_female_troop, "trp_spy_walker_2"),
+      (faction_set_slot, "fac_culture_6", slot_faction_town_walker_male_troop, "trp_town_walker_6_m"),
+      (faction_set_slot, "fac_culture_6", slot_faction_town_walker_female_troop, "trp_town_walker_6_f"),
+      (faction_set_slot, "fac_culture_6", slot_faction_village_walker_male_troop, "trp_village_walker_6_m"),
+      (faction_set_slot, "fac_culture_6", slot_faction_village_walker_female_troop, "trp_village_walker_6_f"),
+      (faction_set_slot, "fac_culture_6", slot_faction_town_spy_male_troop, "trp_spy_walker_3_m"),
+      (faction_set_slot, "fac_culture_6", slot_faction_town_spy_female_troop, "trp_spy_walker_3_f"),
 
 	  (faction_set_slot, "fac_culture_6", slot_faction_bandit_troop, "trp_desert_bandit"),
 	  (faction_set_slot, "fac_culture_6", slot_faction_guard_troop, "trp_sarranid_guard"),
@@ -38271,7 +37911,7 @@ scripts = [
 	 (try_end),
 	 # (call_script,"script_warp_array_shuffle", "$tournament_participant_party"), # No need; shuffling the entry points is enough
 	 	 
-	 (call_script,"script_warp_array_copy", "$tournament_participant_party", "$tournament_equipment_party"),
+	 (call_script,"script_warp_array_copy", "$tournament_equipment_party", "$tournament_participant_party"),
 	 (call_script,"script_warp_array_map", "$tournament_equipment_party", "script_pick_tournament_equipment"),
 
 	 (assign, "$g_tournament_cur_tier", 0),
@@ -39422,7 +39062,7 @@ scripts = [
       (item_set_slot, "itm_vaegir_lamellar_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
       (item_set_slot, "itm_vaegir_noble_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
       (item_set_slot, "itm_vaegir_war_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
-      (item_set_slot, "itm_vaegir_mask", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
+      (item_set_slot, "itm_vaegir_war_mask", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
 	  
 	  #gloves
       (item_set_slot, "itm_leather_gloves", slot_item_multiplayer_item_class, multi_item_class_type_glove),           
@@ -39654,7 +39294,7 @@ scripts = [
       (call_script, "script_multiplayer_set_item_available_for_troop", "itm_vaegir_lamellar_helmet", "trp_vaegir_horseman_multiplayer"),
       (call_script, "script_multiplayer_set_item_available_for_troop", "itm_vaegir_noble_helmet", "trp_vaegir_horseman_multiplayer"),
       (call_script, "script_multiplayer_set_item_available_for_troop", "itm_vaegir_war_helmet", "trp_vaegir_horseman_multiplayer"),
-	  (call_script, "script_multiplayer_set_item_available_for_troop", "itm_vaegir_mask", "trp_vaegir_horseman_multiplayer"),
+	  (call_script, "script_multiplayer_set_item_available_for_troop", "itm_vaegir_war_mask", "trp_vaegir_horseman_multiplayer"),
       (call_script, "script_multiplayer_set_item_available_for_troop", "itm_leather_gloves", "trp_vaegir_horseman_multiplayer"),
       (call_script, "script_multiplayer_set_item_available_for_troop", "itm_mail_mittens", "trp_vaegir_horseman_multiplayer"),
       (call_script, "script_multiplayer_set_item_available_for_troop", "itm_scale_gauntlets", "trp_vaegir_horseman_multiplayer"),
@@ -44990,14 +44630,14 @@ scripts = [
   ]),
   
   # script.warp_array_copy
-  # Copies array 1 over array 2
+  # Copies array 1 from array 2
   # Input: arg1 = src_array
   #        arg2 = dest_array
   # Output: nothing
   ("warp_array_copy",
-  [ (store_script_param, ":src_array", 1),
-    (store_script_param, ":dest_array", 2),
-	
+  [ (store_script_param, ":dest_array", 1),
+	(store_script_param, ":src_array", 2),
+    
 	(party_get_slot, ":length", ":src_array", 0),
 	(party_set_slot, ":dest_array", 0, ":length"),
 	(val_add, ":length", 1),
@@ -45010,15 +44650,16 @@ scripts = [
   # script.cf_warp_array_copy_range
   # Copies the subrange (arg2)..(arg3) from array 1 to array 2
   # Input: arg1 = src_array
-  #        arg2 = first
-  #        arg3 = end
-  #        arg4 = dest_array
+  #        arg2 = dest_array
+  #        arg3 = first
+  #        arg4 = end
+  #        
   # Output: nothing
   ("cf_warp_array_copy_range",
-  [ (store_script_param, ":src_array", 1),
+  [ (store_script_param, ":dest_array", 1),
+    (store_script_param, ":src_array", 4),
     (store_script_param, ":first", 2),
     (store_script_param, ":end", 3),
-    (store_script_param, ":dest_array", 4),
 	
 	(store_sub,":last",":end",1),
 	(party_slot_ge, ":src_array",0,":last"), # Is the source array long enough?
